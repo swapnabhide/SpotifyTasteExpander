@@ -7,6 +7,9 @@ An app that will create a playliost of songs that spotify will not recommend to 
 
 ## TODO
 [ ] Prototype - 
+
   [ ] explore track attributes like dancibility, speechiness etc. 
+  
   [ ] Is there a algorithm that can be used to find tracks that are slightly outside of spotify's recommendations 
+
 [ ] build UI
