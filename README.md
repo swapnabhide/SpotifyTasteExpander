@@ -3,7 +3,8 @@ An app that will create a playliost of songs that spotify will not recommend to 
 
 ## Setup
 1. get client id and key from spotify developer dashboard https://developer.spotify.com/dashboard/applications
-2. create virtual environment and install packages in requirement.txt
+2. rename utils/config_template.py to utils/config.pyand add your client id, client secrete (key) and access token from step 1
+3. create virtual environment and install packages in requirement.txt
 
 ## TODO
 [ ] Prototype - 
