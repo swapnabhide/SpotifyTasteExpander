@@ -19,15 +19,6 @@ def get_tracks_analytics():
     top_tracks = get_top_tracks()
     track_ids = [track['id'] for track in top_tracks['items']]
 
-    popularity = [track['popularity'] for track in top_tracks['items']]
-    mean = np.mean(popularity)
-    std_dev = np.std(popularity)
-
-    # Define a range based on the mean and standard deviation
-    range_start = mean - std_dev
-    range_end = mean + std_dev
-
-    print(f"popularity range is {range_start} - {range_end} ")
     audio_features = sp.audio_features(track_ids)
 
     # Define a list of audio feature names to plot
@@ -80,6 +71,12 @@ def get_song_info_from_playlist(playlist_id):
     get_songs_info(sp, res['items'])
 
 def get_songs_info(sp, items):
+    """get name, album, polpularity, genre (if available)
+
+    Args:
+        sp (_type_): _description_
+        items (_type_): _description_
+    """
     track_info = {}
     for track in items:
         track_info["name"] = track['track']['name']
@@ -93,8 +90,9 @@ def get_songs_info(sp, items):
 ## Scream by Momentum
 ## Piece of Me by Lady Wray
 ## Close by Loveday
-## Tell Me by Groove  Theory
+## Tell Me by Groove Theory
 
 if __name__ == "__main__":
-    #get_recommended_tracks()
-    get_song_info_from_playlist("37i9dQZEVXcRqBD8RsC3Qw")
+    # get_recommended_tracks()
+    get_tracks_analytics()
+    # get_song_info_from_playlist("37i9dQZEVXcRqBD8RsC3Qw")
