@@ -64,7 +64,7 @@ def callback():
         session['token_info'] = token_info
         return redirect(url_for('create_playlist_page'))
     except Exception as e:
-        return f"Error during authentication: {str(e)}", 500
+        return render_template('error.html', error=str(e)), 500
 
 @app.route('/create-playlist-page')
 def create_playlist_page():
