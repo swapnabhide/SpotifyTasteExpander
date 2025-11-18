@@ -96,23 +96,55 @@ def create_playlist():
         top_tracks = sp.current_user_top_tracks(limit=20, time_range='long_term')
         songs_in_taste.extend([item['id'] for item in top_tracks['items']])
 
+        # If user has very little listening history, use medium_term and short_term too
+        if len(songs_in_taste) < 10:
+            top_tracks_medium = sp.current_user_top_tracks(limit=20, time_range='medium_term')
+            songs_in_taste.extend([item['id'] for item in top_tracks_medium['items']])
+
+            top_tracks_short = sp.current_user_top_tracks(limit=20, time_range='short_term')
+            songs_in_taste.extend([item['id'] for item in top_tracks_short['items']])
+
+        # Remove duplicates
+        songs_in_taste = list(set(songs_in_taste))
+
+        # Check if we have enough data
+        if len(songs_in_taste) < 5:
+            return render_template('error.html',
+                error="You don't have enough listening history yet. Try listening to more music on Spotify and come back later!")
+
         # Get seed artists and tracks
-        seed_artists = []
+        seed_artists = set()  # Use set to avoid duplicates
         seed_tracks = []
-        for track_id in songs_in_taste[:10]:  # Limit to avoid too many API calls
-            track = sp.track(track_id)
-            seed_tracks.append(track_id)
-            seed_artists.extend([artist['id'] for artist in track['artists']])
+        for track_id in songs_in_taste[:20]:  # Check more tracks to get enough seeds
+            try:
+                track = sp.track(track_id)
+                seed_tracks.append(track_id)
+                for artist in track['artists']:
+                    seed_artists.add(artist['id'])
+            except Exception as e:
+                print(f"Error fetching track {track_id}: {e}")
+                continue
+
+        seed_artists = list(seed_artists)
 
         # Get recommended tracks (songs to filter out)
+        # Spotify API allows max 5 seeds total
         recommended_tracks = []
-        if seed_artists and seed_tracks:
-            recommendations = sp.recommendations(
-                seed_artists=random.sample(seed_artists, min(len(seed_artists), 3)),
-                seed_tracks=random.sample(seed_tracks, min(len(seed_tracks), 2)),
-                limit=20
-            )
-            recommended_tracks = [track['id'] for track in recommendations['tracks']]
+        if len(seed_artists) >= 2 and len(seed_tracks) >= 2:
+            try:
+                # Use up to 3 artists and 2 tracks (total 5 seeds max)
+                num_artist_seeds = min(3, len(seed_artists))
+                num_track_seeds = min(2, len(seed_tracks))
+
+                recommendations = sp.recommendations(
+                    seed_artists=random.sample(seed_artists, num_artist_seeds),
+                    seed_tracks=random.sample(seed_tracks, num_track_seeds),
+                    limit=20
+                )
+                recommended_tracks = [track['id'] for track in recommendations['tracks']]
+            except Exception as e:
+                print(f"Error getting recommendations: {e}")
+                # Continue without recommendations if this fails
 
         songs_in_taste.extend(recommended_tracks)
 
@@ -164,7 +196,10 @@ def create_playlist():
                              track_count=track_count)
 
     except Exception as e:
-        return render_template('error.html', error=str(e))
+        import traceback
+        error_details = f"{str(e)}\n\nIf this is a 404 error from the recommendations endpoint, it might be due to insufficient listening history or invalid seed data."
+        print(f"Full error:\n{traceback.format_exc()}")
+        return render_template('error.html', error=error_details)
 
 @app.route('/logout')
 def logout():
