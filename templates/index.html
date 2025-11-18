@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spotify Taste Expander</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #1DB954 0%, #191414 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+
+        .container {
+            text-align: center;
+            max-width: 600px;
+            padding: 40px;
+            background: rgba(0, 0, 0, 0.6);
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+        }
+
+        h1 {
+            font-size: 3em;
+            margin-bottom: 20px;
+            background: linear-gradient(45deg, #1DB954, #1ed760);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle {
+            font-size: 1.3em;
+            margin-bottom: 30px;
+            color: #b3b3b3;
+        }
+
+        .description {
+            font-size: 1.1em;
+            line-height: 1.6;
+            margin-bottom: 40px;
+            color: #e0e0e0;
+        }
+
+        .login-btn {
+            background: #1DB954;
+            color: white;
+            border: none;
+            padding: 15px 50px;
+            font-size: 1.2em;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            font-weight: 600;
+        }
+
+        .login-btn:hover {
+            background: #1ed760;
+            transform: scale(1.05);
+            box-shadow: 0 8px 20px rgba(29, 185, 84, 0.4);
+        }
+
+        .features {
+            margin-top: 40px;
+            text-align: left;
+        }
+
+        .features h3 {
+            color: #1DB954;
+            margin-bottom: 15px;
+        }
+
+        .features ul {
+            list-style: none;
+        }
+
+        .features li {
+            padding: 10px 0;
+            padding-left: 30px;
+            position: relative;
+            color: #e0e0e0;
+        }
+
+        .features li:before {
+            content: "♪";
+            position: absolute;
+            left: 0;
+            color: #1DB954;
+            font-size: 1.2em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Spotify Taste Expander</h1>
+        <p class="subtitle">Discover music beyond your comfort zone</p>
+
+        <p class="description">
+            Create a personalized playlist that filters out songs you typically listen to,
+            helping you discover new artists and expand your musical horizons.
+        </p>
+
+        <a href="/login" class="login-btn">Login with Spotify</a>
+
+        <div class="features">
+            <h3>How it works:</h3>
+            <ul>
+                <li>Analyzes your listening history and favorite tracks</li>
+                <li>Identifies artists and songs similar to your taste</li>
+                <li>Finds fresh music from artists you haven't explored</li>
+                <li>Creates a custom playlist in your Spotify account</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>
